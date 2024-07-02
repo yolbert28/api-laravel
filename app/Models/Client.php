@@ -16,8 +16,7 @@ class Client extends Model
         'address'
     ];
 
-    public function services()
-    {
-        return $this->belongsToMany(Service::class);
+    public function services(){
+        return $this->belongsToMany(Service::class)->withTimestamps();
     }
 }
