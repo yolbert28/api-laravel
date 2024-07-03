@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +26,9 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        $client = Client::create($request->all());
+        $validatedData = $request->validated();
+
+        $client = Client::create($validatedData);
 
         return response()->json([
             "message" => "Cliente creado con exito",
@@ -44,36 +48,26 @@ class ClientController extends Controller
         }
 
         return response()->json([
-            "message" => "No existe el cliente con id: {$id}"
-        ], Response::HTTP_BAD_REQUEST);
+            "message" => "El cliente no existe"
+        ], Response::HTTP_NOT_FOUND);
     }
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateClientRequest $request, $id)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'string', 'max:255'],
-            'phone' => ['sometimes', 'string', 'max:255'],
-            'address' => ['sometimes', 'string', 'max:255'],
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json([
-                "error" => $validate->errors()
-            ], Response::HTTP_BAD_REQUEST);
-        }
+        $validatedData = $request->validated();
 
         $client = Client::find($id);
 
         if (!$client) {
             return response()->json([
-                "message" => "No existe el cliente con id: {$id}"
-            ], Response::HTTP_BAD_REQUEST);
+                "message" => "El cliente no existe"
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        $client->update($request->all());
+        $client->update($validatedData);
 
         return response()->json([
             "message" => "Cliente actualizado con exito",
@@ -84,24 +78,24 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id, $force = false)
+    public function destroy($id)
     {
         $client = Client::find($id);
 
         if (!$client) {
             return response()->json([
-                "message" => "No existe el cliente con id: {$id}"
-            ], Response::HTTP_BAD_REQUEST);
+                "message" => "El cliente no existe"
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        if ((sizeof($client->services) > 0) && !$force) {
+        // verificamos si el cliente tiene servicios registrados
+        if (sizeof($client->services) > 0) {
             return response()->json([
                 "message" => "El cliente tiene servicios registrados"
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $client->services()->detach();
-
+        // eliminamos al cliente
         $client->delete();
 
         return response()->json([
@@ -111,28 +105,43 @@ class ClientController extends Controller
 
     public function addService(Request $request)
     {
+        // validamos los datos recibidos
         $validate = Validator::make(
             $request->all(),
             [
                 'client_id' => ['required'],
                 'service_id' => ['required']
+            ],
+            [
+                'client_id.required' => 'El id del cliente es requerido',
+                'service_id.required' => 'El id del servicio es requerido',
             ]
         );
 
+        // si algun dato es incorrecto enviamos el mensaje de error
         if ($validate->fails()) {
             return response()->json([
-                "error" => $validate->errors()
+                "message" => $validate->errors()->first()
             ], Response::HTTP_BAD_REQUEST);
         }
 
         $client = Client::find($request->only('client_id'))->first();
 
+        $service = Service::find($request->only('service_id'))->first();
+
         if (!$client) {
             return response()->json([
                 "message" => "El cliente no existe"
-            ], Response::HTTP_BAD_REQUEST);
+            ], Response::HTTP_NOT_FOUND);
         }
 
+        if (!$service) {
+            return response()->json([
+                "message" => "El servicio no existe"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        // verificamos que el cliente no tenga registrado el servicio que se desea registrar
         foreach ($client->services as $service) {
             if ($service->id == $request->only('service_id')['service_id']) {
                 return response()->json([
@@ -141,8 +150,10 @@ class ClientController extends Controller
             }
         }
 
+        // registramos el archivo
         $client->services()->attach($request->only('service_id')['service_id']);
 
+        // buscamos nuevamente al cliente para mostrar la informacion actualizada
         $client = Client::find($request->only('client_id'))->first();
 
         return response()->json([
@@ -151,25 +162,25 @@ class ClientController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function removeService(Request $request, $all = false)
+    public function removeService(Request $request)
     {
-        $rules = $all ? [
-            'client_id' => ['required']
-        ] : [
-            'client_id' => ['required'],
-            'service_id' => ['required']
-        ];
-
-        // return $rules;
-
+        // validamos los datos recibidos
         $validate = Validator::make(
             $request->all(),
-            $rules
+            [
+                'client_id' => ['required'],
+                'service_id' => ['required']
+            ],
+            [
+                'client_id.required' => 'El id del cliente es requerido',
+                'service_id.required' => 'El id del servicio es requerido',
+            ]
         );
 
+        // si algun dato es incorrecto enviamos el mensaje de error
         if ($validate->fails()) {
             return response()->json([
-                "error" => $validate->errors()
+                "message" => $validate->errors()->first()
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -178,36 +189,53 @@ class ClientController extends Controller
         if (!$client) {
             return response()->json([
                 "message" => "El cliente no existe"
-            ], Response::HTTP_BAD_REQUEST);
+            ], Response::HTTP_NOT_FOUND);
         }
 
+        // variable que chequea la existencia del servicio a eliminar
         $exist = false;
 
-        if (!$all) {
-            foreach ($client->services as $service) {
-                if ($service->id == $request->only('service_id')['service_id'])
-                    $exist = true;
-            }
-
-            if (!$exist) {
-                return response()->json([
-                    "message" => "El cliente no tiene este servicio registrado"
-                ], Response::HTTP_BAD_REQUEST);
-            }
+        // verifica que el cliente tenga el servicio registrado
+        foreach ($client->services as $service) {
+            if ($service->id == $request->only('service_id')['service_id'])
+                $exist = true;
         }
 
-        if ($all) {
-            $client->services()->detach();
-        } else {
-            $client->services()->detach($request->only('service_id'));
+        if (!$exist) {
+            return response()->json([
+                "message" => "El cliente no tiene este servicio registrado"
+            ], Response::HTTP_NOT_FOUND);
         }
 
+        $client->services()->detach($request->only('service_id'));
+
+        // buscamos nuevamente al cliente para mostrar la informacion actualizada
         $client = Client::find($request->only('client_id'))->first();
 
         return response()->json([
             "message" => "Servicio eliminado con exito",
-            "client" => new ClientResource($client),
-            "all" => $all
+            "client" => new ClientResource($client)
+        ], Response::HTTP_OK);
+    }
+
+    public function removeAllServices($id){
+
+        $client = Client::find($id)->first();
+
+        if(!$client){
+            return response()->json([
+                "message" => "El cliente no existe"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $client->services()->detach();
+
+        // buscamos nuevamente al cliente para mostrar la informacion actualizada
+        $client = Client::find($id)->first();
+
+        return response()->json([
+            "message" => "Servicios separados con exito",
+            "client" => new ClientResource($client)
         ], Response::HTTP_OK);
     }
 }

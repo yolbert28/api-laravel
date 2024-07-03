@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class ServiceController extends Controller
@@ -21,21 +21,9 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreServiceRequest $request)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['sometimes', 'string', 'max:500'],
-            'price' => ['required', 'decimal:2'],
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json([
-                "error" => $validate->errors()
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
-        $validatedData = $request->all();
+        $validatedData = $request->validated();
 
         $service = Service::create($validatedData);
 
@@ -57,35 +45,25 @@ class ServiceController extends Controller
         }
 
         return response()->json([
-            "message" => "No existe el servicio con id: {$id}"
-        ], Response::HTTP_BAD_REQUEST);
+            "message" => "El servicio no existe"
+        ], Response::HTTP_NOT_FOUND);
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateServiceRequest $request, $id)
     {
-        $validate = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['sometimes', 'string', 'max:500'],
-            'price' => ['required', 'decimal:2'],
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json([
-                "error" => $validate->errors()
-            ], Response::HTTP_BAD_REQUEST);
-        }
+        $validatedData = $request->validated();
 
         $service = Service::find($id);
 
         if (!$service) {
             return response()->json([
-                "message" => "No existe el servicio con id: {$id}"
-            ], Response::HTTP_BAD_REQUEST);
+                "message" => "El servicio no existe"
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        $service->update($request->all());
+        $service->update($validatedData);
 
         return response()->json([
             "message" => "Servicio actualizado con exito",
@@ -96,28 +74,51 @@ class ServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id, $force = false)
+    public function destroy($id)
     {
+
         $service = Service::find($id);
 
         if (!$service) {
             return response()->json([
-                "message" => "No existe el servicio con id: {$id}"
-            ], Response::HTTP_BAD_REQUEST);
+                "message" => "El servicio no existe"
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        if ((sizeof($service->clients) > 0) && !$force) {
+        // verificamos si hay clientes que tienen el servicio registrado
+        if (sizeof($service->clients) > 0) {
             return response()->json([
                 "message" => "Algunos clientes tienen el servicio registrado"
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $service->clients()->detach();
-
+        // eliminamos el servicio
         $service->delete();
 
         return response()->json([
             "message" => "Servicio eliminado con exito",
+        ], Response::HTTP_OK);
+    }
+
+    public function removeAllClients($id){
+
+        $service = Service::find($id)->first();
+
+        if(!$service){
+            return response()->json([
+                "message" => "El servicio no existe"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        // separamos todos los clientes del servicio
+        $service->clients()->detach();
+
+        // buscamos nuevamente al servicio para mostrar la informacion actualizada
+        $service = Service::find($id)->first();
+
+        return response()->json([
+            "message" => "Clientes separados con exito",
+            "client" => new ServiceResource($service)
         ], Response::HTTP_OK);
     }
 }
