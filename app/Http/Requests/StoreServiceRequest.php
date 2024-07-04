@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Component\HttpFoundation\Response;
 
 class StoreServiceRequest extends FormRequest
 {
@@ -24,7 +22,7 @@ class StoreServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:services'],
             'description' => ['sometimes', 'string', 'max:500'],
             'price' => ['required', 'decimal:2'],
         ];
@@ -34,6 +32,7 @@ class StoreServiceRequest extends FormRequest
     {
         return [
             'name.required' => 'El nombre es requerido',
+            'name.unique' => 'El nombre ya esta siendo utilizado',
             'name.string' => 'El nombre debe ser una cadena de texto',
             'name.max' => 'El nombre debe tener como maximo 255 caracteres',
 

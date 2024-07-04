@@ -10,4 +10,4 @@ Route::post('client/removeService',[ClientController::class, 'removeService'] );
 Route::post('client/removeAllService/{id}',[ClientController::class, 'removeAllServices'] );
 
 Route::apiResource('service', ServiceController::class);
-Route::post('client/removeAllClient/{id}',[ClientController::class, 'removeAllClients'] );
+Route::post('service/removeAllClient/{id}',[ServiceController::class, 'removeAllClients'] );

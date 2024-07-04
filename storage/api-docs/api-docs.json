@@ -1,0 +1,1713 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API sencilla",
+        "description": "API CRUD",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/client": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Get list of clients",
+                "description": "Return list of clients",
+                "operationId": "47edc6bb25c81b54f272e0c1b29d7bd8",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "Id of the client",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "Name of the client",
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "description": "email of the client",
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "description": "Phone of the client",
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "description": "Address of the client",
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "description": "created date of the client",
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "description": "updated date of the client",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Create a client",
+                "description": "Create a client",
+                "operationId": "5147ed146b40ef320b49d9fb3eca3995",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john.doe@examp.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "04125748345"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Venezuela"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Id of the client",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Name of the client",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "email of the client",
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "description": "Phone of the client",
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "description": "Address of the client",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "description": "created date of the client",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "description": "updated date of the client",
+                                                    "type": "string"
+                                                },
+                                                "services": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "description": "id of the service",
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "description": "name of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "description": "description of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "description": "price of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "created_at": {
+                                                                "description": "created date of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "description": "updated date of the service",
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/client/{id}": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Find a client",
+                "description": "Return a client",
+                "operationId": "b403f421c2533750ad586d0ad518a40b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "Id of the client",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Name of the client",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "email of the client",
+                                            "type": "string"
+                                        },
+                                        "phone": {
+                                            "description": "Phone of the client",
+                                            "type": "string"
+                                        },
+                                        "address": {
+                                            "description": "Address of the client",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "created date of the client",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "updated date of the client",
+                                            "type": "string"
+                                        },
+                                        "services": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "id of the service",
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "description": "name of the service",
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "description": "description of the service",
+                                                        "type": "string"
+                                                    },
+                                                    "price": {
+                                                        "description": "price of the service",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "created date of the service",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "updated date of the service",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Update a client",
+                "description": "Update a client",
+                "operationId": "6eaa437cccd8b64c7d0667883ab34eb6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john.doe@examp.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "04125748345"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Venezuela"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Id of the client",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Name of the client",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "email of the client",
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "description": "Phone of the client",
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "description": "Address of the client",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "description": "created date of the client",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "description": "updated date of the client",
+                                                    "type": "string"
+                                                },
+                                                "services": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "description": "id of the service",
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "description": "name of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "description": "description of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "description": "price of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "created_at": {
+                                                                "description": "created date of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "description": "updated date of the service",
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Delete a client",
+                "description": "Delete a client",
+                "operationId": "70455e4432e9a807e36e627a78353c9d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/client/addService": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Add a service to a client",
+                "description": "Add a service to a client",
+                "operationId": "61e324709e9f501b164c5ef38181a319",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "client_id",
+                                    "service_id"
+                                ],
+                                "properties": {
+                                    "client_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "service_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Id of the client",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Name of the client",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "email of the client",
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "description": "Phone of the client",
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "description": "Address of the client",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "description": "created date of the client",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "description": "updated date of the client",
+                                                    "type": "string"
+                                                },
+                                                "services": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "description": "id of the service",
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "description": "name of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "description": "description of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "description": "price of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "created_at": {
+                                                                "description": "created date of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "description": "updated date of the service",
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/client/removeService": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Remove a service to a client",
+                "description": "Remove a service to a client",
+                "operationId": "93737d52a639ebb84b82cb72dc969a64",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "client_id",
+                                    "service_id"
+                                ],
+                                "properties": {
+                                    "client_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "service_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Id of the client",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Name of the client",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "email of the client",
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "description": "Phone of the client",
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "description": "Address of the client",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "description": "created date of the client",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "description": "updated date of the client",
+                                                    "type": "string"
+                                                },
+                                                "services": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "description": "id of the service",
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "description": "name of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "description": "description of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "description": "price of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "created_at": {
+                                                                "description": "created date of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "description": "updated date of the service",
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/client/removeAllService/{id}": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Remove all services from a client",
+                "description": "Remove all services from a client",
+                "operationId": "81dc113983022c0a74b7ee684f0910dc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "client": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Id of the client",
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "description": "Name of the client",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "email of the client",
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "description": "Phone of the client",
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "description": "Address of the client",
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "description": "created date of the client",
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "description": "updated date of the client",
+                                                    "type": "string"
+                                                },
+                                                "services": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "description": "id of the service",
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "description": "name of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "description": "description of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "description": "price of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "created_at": {
+                                                                "description": "created date of the service",
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "description": "updated date of the service",
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/service": {
+            "get": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Get list of services",
+                "description": "Return list of services",
+                "operationId": "38cb00f475af2f0b3f23943c938a64a3",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "id of the service",
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "description": "name of the service",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "description of the service",
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "description": "price of the service",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "created date of the service",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "updated date of the service",
+                                            "type": "string"
+                                        },
+                                        "clients": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Id of the client",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "description": "email of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "description": "Phone of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "description": "Address of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "created date of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "updated date of the client",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Create a service",
+                "description": "Create a service",
+                "operationId": "2e19439c5b005b48a931cedecc638752",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "electricidad"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "servicio electrico"
+                                    },
+                                    "price": {
+                                        "type": "string",
+                                        "example": 50
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "id of the service",
+                                                "type": "number"
+                                            },
+                                            "name": {
+                                                "description": "name of the service",
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "description": "description of the service",
+                                                "type": "string"
+                                            },
+                                            "price": {
+                                                "description": "price of the service",
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "description": "created date of the service",
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "description": "updated date of the service",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/service/{id}": {
+            "get": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Find a service",
+                "description": "Return a service",
+                "operationId": "60c01393c507a579a2590d89d3c645b6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "id of the service",
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "description": "name of the service",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "description of the service",
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "description": "price of the service",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "created date of the service",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "updated date of the service",
+                                            "type": "string"
+                                        },
+                                        "clients": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Id of the client",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "description": "email of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "description": "Phone of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "description": "Address of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "created date of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "updated date of the client",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Update a service",
+                "description": "Update a service",
+                "operationId": "041d518e20275e0d38da5223b059b400",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "electricidad"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "servicio electrico"
+                                    },
+                                    "price": {
+                                        "type": "string",
+                                        "example": 50
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "id of the service",
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "description": "name of the service",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "description of the service",
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "description": "price of the service",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "created date of the service",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "updated date of the service",
+                                            "type": "string"
+                                        },
+                                        "clients": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Id of the client",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "description": "email of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "description": "Phone of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "description": "Address of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "created date of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "updated date of the client",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {}
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Delete a service",
+                "description": "Delete a service",
+                "operationId": "b8e7df774434a5ca959aa99a9cd27b92",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/service/removeAllClient/{id}": {
+            "post": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Remove all clients from a service",
+                "description": "Remove all clients from a service",
+                "operationId": "d3a32d1f591f0235128c41de0b373350",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "id of the service",
+                                            "type": "number"
+                                        },
+                                        "name": {
+                                            "description": "name of the service",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "description of the service",
+                                            "type": "string"
+                                        },
+                                        "price": {
+                                            "description": "price of the service",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "created date of the service",
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "description": "updated date of the service",
+                                            "type": "string"
+                                        },
+                                        "clients": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Id of the client",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "description": "email of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "phone": {
+                                                        "description": "Phone of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "address": {
+                                                        "description": "Address of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "created date of the client",
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "updated date of the client",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Clients",
+            "description": "Clients"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        }
+    ]
+}

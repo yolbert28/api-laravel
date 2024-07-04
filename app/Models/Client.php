@@ -16,6 +16,15 @@ class Client extends Model
         'address'
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'pivot'
+    ];
+
     public function services(){
         return $this->belongsToMany(Service::class)->withTimestamps();
     }
