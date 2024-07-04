@@ -197,7 +197,7 @@ class ClientController extends Controller
 
         if (!$exist) {
             return response()->json([
-                "message" => "El cliente no tiene este servicio registrado"
+                "message" => "El cliente no tiene este servicio registrado" 
             ], Response::HTTP_NOT_FOUND);
         }
 
